@@ -1,0 +1,100 @@
+{
+  "name": "tomamine",
+  "author": "Ktonel475",
+  "main": "main.js",
+  "description": "A tomato timer built with Vitejs + Electron",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "electron-forge start",
+    "electron:start": "npm run build && electron .",
+    "electron:dev": "electron .",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.1",
+    "@capacitor/ios": "^7.0.1",
+    "@chakra-ui/react": "^3.3.1",
+    "@electron-forge/plugin-vite": "^7.6.0",
+    "@emotion/react": "^11.14.0",
+    "electron-squirrel-startup": "^1.0.1",
+    "framer-motion": "^11.18.1",
+    "next-themes": "^0.4.4",
+    "react": "^18.3.1",
+    "react-countdown-circle-timer": "^3.2.1",
+    "react-dom": "^18.3.1",
+    "react-howler": "^5.2.0",
+    "react-icons": "^5.4.0",
+    "react-timer-hook": "^3.0.8",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.6.0",
+    "@electron-forge/maker-deb": "^7.6.0",
+    "@electron-forge/maker-dmg": "^7.6.0",
+    "@electron-forge/maker-rpm": "^7.6.0",
+    "@electron-forge/maker-squirrel": "^7.6.0",
+    "@electron-forge/maker-zip": "^7.6.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.6.0",
+    "@electron-forge/plugin-fuses": "^7.6.0",
+    "@electron/fuses": "^1.8.0",
+    "@eslint/js": "^9.17.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/react-howler": "^5.2.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^34.0.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.5"
+  },
+  "config": {
+    "forge": {
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "win32", "darwin"
+          ],
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "platforms": [
+            "win32"
+          ],
+          "config": {
+            "icons": "src/assets/winIcon.ico"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "icon": "src/assets/app-icon.icns"
+          }
+        }
+      ],
+      "publishers": []
+    }
+  }
+}
