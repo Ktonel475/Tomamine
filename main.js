@@ -9,7 +9,7 @@ function createWindow () {
     width: 400,
     height: 700,
     autoHideMenuBar: true, 
-    icon: path.join(__dirname, 'src/assets/winIcon.ico'),
+    icon: path.join(__dirname, 'public/winIcon.ico'),
     webPreferences: {
       nodeIntegration: true
     }
