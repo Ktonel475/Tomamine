@@ -57,7 +57,7 @@
     "productName": "Tomamine",
     "copyright": "Copyright © 2024 Ktonel475",
     "directories": {
-      "output": "dist"
+      "output": "out"
     },
     "files": [
       "**/*",
