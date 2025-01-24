@@ -6,5 +6,8 @@ export default defineConfig({
   base: './', // Use relative base for Capacitor
   build: {
     outDir: 'dist',
+    rollupOptions:{
+      external: ['electron'],
+    }
   },
 })

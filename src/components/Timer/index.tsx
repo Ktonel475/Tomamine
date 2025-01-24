@@ -229,10 +229,10 @@ const CircularTimer: React.FC<timerprop> = () => {
 
       <Flex justifyContent='space-between'>
         <IconButton onClick={() => togglePlay()} variant="ghost" rounded='full'>
-          {isplaying || isRestplaying ? <PiPause /> : <PiPlay />}
+          {isplaying || isRestplaying ? <PiPause style={{ color: 'white' }}/> : <PiPlay style={{ color: 'white' }}/>}
         </IconButton>
         <IconButton onClick={() => Reset()} variant='ghost' rounded='full'>
-          <RiResetLeftLine />
+          <RiResetLeftLine style={{ color: 'white' }}/>
         </IconButton>
       </Flex>
       {isConfirmationOpen ?

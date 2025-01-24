@@ -24,6 +24,6 @@ A simple and effective focus timer app designed for productivity, built with Vit
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Creative Commons Non-Commercial License](LICENSE).
 
 # Happy focusing! 🚀

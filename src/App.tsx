@@ -33,7 +33,7 @@ function App() {
             <DrawerRoot placement='bottom' size='sm'>
               <DrawerTrigger asChild>
                 <IconButton bg='transparent' variant='ghost' size='2xl' >
-                  <FiEdit />
+                  <FiEdit  style={{ color: 'white' }}/>
                 </IconButton>
               </DrawerTrigger>
               <DrawerContent>
@@ -52,10 +52,10 @@ function App() {
                 </DrawerFooter>
               </DrawerContent>
             </DrawerRoot>
-            <DrawerRoot placement='bottom' size='sm'>
+            <DrawerRoot placement='bottom' size='sm' >
               <DrawerTrigger asChild>
                 <IconButton bg='transparent' variant='ghost' size='2xl'>
-                  <IoSettingsOutline />
+                  <IoSettingsOutline style={{ color: 'white' }}/>
                 </IconButton>
               </DrawerTrigger>
               <DrawerContent>
@@ -100,7 +100,7 @@ function App() {
             <Box />
             <Box>
               <IconButton variant="ghost" size='2xl' rounded='full'>
-                <FaGithub />
+                <FaGithub style={{ color: 'white' }}/>
               </IconButton>
             </Box>
           </Flex>

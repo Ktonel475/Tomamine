@@ -68,7 +68,7 @@ const defaultTheme: Preference = {
 
 const useSettings = create<SettingsStore>((set) => ({
   time: (() => {
-    const storedTime = sessionStorage.getItem('time')
+    const storedTime = localStorage.getItem('time')  // Use localStorage here
     try {
       return storedTime ? JSON.parse(storedTime) : defaultTime
     } catch {
@@ -79,12 +79,12 @@ const useSettings = create<SettingsStore>((set) => ({
     set((state) => {
       const updatedTime =
         typeof newTime === 'function' ? newTime(state.time) : newTime
-      sessionStorage.setItem('time', JSON.stringify(updatedTime))
+      localStorage.setItem('time', JSON.stringify(updatedTime))  // Use localStorage here
       return { time: updatedTime }
     })
   },
   notification: (() => {
-    const storedNotification = sessionStorage.getItem('status')
+    const storedNotification = localStorage.getItem('status')  // Use localStorage here
     try {
       return storedNotification ? JSON.parse(storedNotification) : defaultNotification
     } catch {
@@ -95,22 +95,18 @@ const useSettings = create<SettingsStore>((set) => ({
     set((state) => {
       const updatedNotification =
         typeof newNotify === 'function' ? newNotify(state.notification) : newNotify
-      sessionStorage.setItem('status', JSON.stringify(updatedNotification))
+      localStorage.setItem('status', JSON.stringify(updatedNotification))  // Use localStorage here
       return { notification: updatedNotification }
     })
   },
   resetNotification: () => {
     set(() => {
-      const defaultNotification: Status = {
-        Complete: 'Task complete! Well done!',
-        Break: 'Pause and refresh',
-      }
-      sessionStorage.setItem('status', JSON.stringify(defaultNotification))
+      localStorage.setItem('status', JSON.stringify(defaultNotification))  // Use localStorage here
       return { notification: defaultNotification }
     })
   },
   Theme: (() => {
-    const storedTheme = sessionStorage.getItem('theme')
+    const storedTheme = localStorage.getItem('theme')  // Use localStorage here
     try {
       return storedTheme ? JSON.parse(storedTheme) : defaultTheme
     } catch {
@@ -121,22 +117,13 @@ const useSettings = create<SettingsStore>((set) => ({
     set((state) => {
       const updatedTheme =
         typeof newTheme === 'function' ? newTheme(state.Theme) : newTheme
-      sessionStorage.setItem('theme', JSON.stringify(updatedTheme))
+      localStorage.setItem('theme', JSON.stringify(updatedTheme))  // Use localStorage here
       return { Theme: updatedTheme }
     })
   },
   resetTheme: () => {
     set(() => {
-      const defaultTheme: Preference = {
-        Circle: '#FF8D63',
-        Trail: '#EEE',
-        Bcircle: '#486BB8',
-        Btrail: '#EEE',
-        background: "#242424",
-        title: 'Tomato Timer', 
-        SessionEnd: 'Focus Duration'
-      }
-      sessionStorage.setItem('theme', JSON.stringify(defaultTheme))
+      localStorage.setItem('theme', JSON.stringify(defaultTheme))  // Use localStorage here
       return { Theme: defaultTheme }
     })
   },
