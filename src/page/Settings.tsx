@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Input, Flex, Button, parseColor, Color } from "@chakra-ui/react"
-import { Field } from '../components/ui/field'
-import { SegmentedControl } from "../components/ui/segmented-control"
+import { Field } from '@/components/ui/field'
+import { SegmentedControl } from "@/components/ui/segmented-control"
 import useSettings from "../components/sessionStorage"
 import { useState } from "react"
 import { ColorFormat } from 'react-countdown-circle-timer'
@@ -13,17 +13,17 @@ import {
     ColorPickerRoot,
     ColorPickerSliders,
     ColorPickerTrigger,
-} from "../components/ui/color-picker"
-import { Toaster, toaster } from '../components/ui/toaster'
+} from "@/components/ui/color-picker"
+import { Toaster, toaster } from '@/components/ui/toaster'
 
 const Settings: React.FC = () => {
-    const { notification, setNotify, resetNotification, Theme, setTheme, resetTheme } = useSettings()
+    const { notification, setNotify, resetNotification, TimerTheme, setTheme, resetTheme } = useSettings()
     const [complete, setComplete] = useState<string>('')
     const [breakT, setBreakT] = useState<string>('')
     const [title, setTitle] = useState<string>('')
-    const [color, setColor] = useState(parseColor(Theme.Circle))
-    const [color2, setColor2] = useState(parseColor(Theme.Bcircle))
-    const [sessionEnd, setSessionEnd] = useState<string>('Focus Duration')
+    const [color, setColor] = useState(parseColor(TimerTheme.Circle))
+    const [color2, setColor2] = useState(parseColor(TimerTheme.Bcircle))
+    const [sessionEnd, setSessionEnd] = useState<boolean>(true)
     const [change, setChange] = useState<boolean>(false)
 
     const save = () => {
@@ -33,39 +33,36 @@ const Settings: React.FC = () => {
         }[] = [
                 { condition: breakT, action: () => { setNotify((prevState) => ({ ...prevState, Break: breakT })); setBreakT('') } },
                 { condition: complete, action: () => { setNotify((prevState) => ({ ...prevState, Complete: complete })); setComplete('') } },
-                { condition: title, action: () => { setTheme((prevState) => ({ ...prevState, title: title })); setTitle('') } },
-                { condition: color, action: () => { setTheme((prevState) => ({ ...prevState, Circle: color.toString("hex") as ColorFormat })) } },
-                { condition: color2, action: () => { setTheme((prevState) => ({ ...prevState, Bcircle: color2.toString("hex") as ColorFormat })) } },
+                { condition: title, action: () => { setTheme((prevState) => ({ ...prevState, TimerTitle: title })); setTitle('') } },
+                { condition: color != parseColor(TimerTheme.Circle), action: () => { setTheme((prevState) => ({ ...prevState, Circle: color.toString("hex") as ColorFormat })) } },
+                { condition: color2 != parseColor(TimerTheme.Bcircle), action: () => { setTheme((prevState) => ({ ...prevState, Bcircle: color2.toString("hex") as ColorFormat })) } },
                 { condition: sessionEnd, action: () => { setTheme((prevState) => ({ ...prevState, SessionEnd: sessionEnd })) } }
             ]
-            
+
         updates.forEach(({ condition, action }) => {
             if (condition) {
                 action()
                 setChange(true)
             }
         })
+    }
 
+    useEffect(() => {
         if (change) {
             toaster.create({
                 title: 'Saved successfully',
-                type: 'success',
+                type: 'custom',
                 duration: 1000
             })
-        } else {
-            toaster.create({
-                title: 'No Change Made',
-                type: 'info',
-                duration: 1000
-            })
+            setChange(false)
         }
-    }
+    }, [change])
 
     const reset = () => {
         resetNotification()
         resetTheme()
-        setColor(parseColor(Theme.Circle))
-        setColor2(parseColor(Theme.Bcircle))
+        setColor(parseColor(TimerTheme.Circle))
+        setColor2(parseColor(TimerTheme.Bcircle))
     }
     return (
         <Flex
@@ -98,7 +95,7 @@ const Settings: React.FC = () => {
                     />
                 </Field>
                 <Field label="Timer Title" width='auto'>
-                    <Input placeholder={Theme.title}
+                    <Input placeholder={TimerTheme.TimerTitle}
                         maxWidth={150}
                         onChange={(val) => setTitle(val.target.value)}
                         value={title}
@@ -113,7 +110,7 @@ const Settings: React.FC = () => {
                 direction='column'
             >
                 <Field label='Focus Duration Color' width='auto'>
-                    <ColorPickerRoot defaultValue={parseColor(Theme.Circle)}
+                    <ColorPickerRoot defaultValue={parseColor(TimerTheme.Circle)}
                         maxW="200px"
                         onValueChange={(e) => setColor(e.value)}
                         value={color}
@@ -129,7 +126,7 @@ const Settings: React.FC = () => {
                     </ColorPickerRoot>
                 </Field>
                 <Field label='Break Duration Color' width='auto'>
-                    <ColorPickerRoot defaultValue={parseColor(Theme.Bcircle)}
+                    <ColorPickerRoot defaultValue={parseColor(TimerTheme.Bcircle)}
                         maxW="200px"
                         onValueChange={(e) => setColor2(e.value)}
                         value={color2}
@@ -146,9 +143,9 @@ const Settings: React.FC = () => {
                 </Field>
                 <Field label='Session End Preference' width='auto'>
                     <SegmentedControl
-                        defaultValue={Theme.SessionEnd}
+                        defaultValue={TimerTheme.SessionEnd ? 'Focus Duration' : 'Break Duration'}
                         items={['Focus Duration', 'Break Duration']}
-                        onValueChange={(e) => setSessionEnd(e.value)}
+                        onValueChange={(e) => e ? setSessionEnd(true) : setSessionEnd(false)}
                     />
                 </Field>
                 <Flex width={75} gap={5} pt={5}>
@@ -160,7 +157,6 @@ const Settings: React.FC = () => {
                     </Button>
                 </Flex>
             </Flex>
-
         </Flex>
     )
 

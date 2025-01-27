@@ -23,9 +23,13 @@ type Preference = {
   Trail: ColorFormat
   Bcircle: ColorFormat
   Btrail: string
-  background: string
-  title: string
-  SessionEnd: string
+  AppBackground: string
+  TimerTitle: string
+  SessionEnd: boolean
+}
+
+type AudioPref = {
+  Volume: number
 }
 
 type SettingsStore = {
@@ -34,9 +38,12 @@ type SettingsStore = {
   notification: Status
   setNotify: (newNotify: ((prevNotify: Status) => Status) | Status) => void
   resetNotification: () => void
-  Theme: Preference
+  TimerTheme: Preference
   setTheme: (newTheme: ((prevTheme: Preference) => Preference) | Preference) => void
   resetTheme: () => void
+  Audio: AudioPref
+  setAudio: (newAudio: ((prevAudio: AudioPref) => AudioPref) | AudioPref) => void
+  resetAudio: () => void
 }
 
 const defaultTime: Time = {
@@ -61,9 +68,13 @@ const defaultTheme: Preference = {
   Trail: '#EEE',
   Bcircle: '#486BB8',
   Btrail: '#EEE',
-  background: "#242424",
-  title: 'Tomato Timer',
-  SessionEnd: 'Focus Duration',
+  AppBackground: "#242424",
+  TimerTitle: 'Tomato%20Timer',
+  SessionEnd: true,
+}
+
+const defaultAudio: AudioPref = {
+  Volume: 1.0
 }
 
 const useSettings = create<SettingsStore>((set) => ({
@@ -101,12 +112,12 @@ const useSettings = create<SettingsStore>((set) => ({
   },
   resetNotification: () => {
     set(() => {
-      localStorage.setItem('status', JSON.stringify(defaultNotification))  // Use localStorage here
+      localStorage.setItem('status', JSON.stringify(defaultNotification))
       return { notification: defaultNotification }
     })
   },
-  Theme: (() => {
-    const storedTheme = localStorage.getItem('theme')  // Use localStorage here
+  TimerTheme: (() => {
+    const storedTheme = localStorage.getItem('timerTheme')
     try {
       return storedTheme ? JSON.parse(storedTheme) : defaultTheme
     } catch {
@@ -116,15 +127,37 @@ const useSettings = create<SettingsStore>((set) => ({
   setTheme: (newTheme) => {
     set((state) => {
       const updatedTheme =
-        typeof newTheme === 'function' ? newTheme(state.Theme) : newTheme
-      localStorage.setItem('theme', JSON.stringify(updatedTheme))  // Use localStorage here
-      return { Theme: updatedTheme }
+        typeof newTheme === 'function' ? newTheme(state.TimerTheme) : newTheme
+      localStorage.setItem('timerTheme', JSON.stringify(updatedTheme))
+      return { TimerTheme: updatedTheme }
     })
   },
   resetTheme: () => {
     set(() => {
-      localStorage.setItem('theme', JSON.stringify(defaultTheme))  // Use localStorage here
-      return { Theme: defaultTheme }
+      localStorage.setItem('timerTheme', JSON.stringify(defaultTheme))
+      return { TimerTheme: defaultTheme }
+    })
+  },
+  Audio: (() => {
+    const storedAudio = localStorage.getItem('Audio')
+    try {
+      return storedAudio ? JSON.parse(storedAudio) : defaultAudio
+    } catch {
+      return defaultAudio
+    }
+  })(),
+  setAudio: (newAudio) => {
+    set((state) => {
+      const updatedAudio =
+        typeof newAudio === 'function' ? newAudio(state.Audio) : newAudio
+      localStorage.setItem('Audio', JSON.stringify(updatedAudio))
+      return { Audio: updatedAudio }
+    })
+  },
+  resetAudio: () => {
+    set(() => {
+      localStorage.setItem('Audio', JSON.stringify(defaultAudio))
+      return { Audio: defaultAudio }
     })
   },
 }))

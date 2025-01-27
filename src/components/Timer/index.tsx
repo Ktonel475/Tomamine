@@ -15,7 +15,7 @@ interface timerprop {
 
 const CircularTimer: React.FC<timerprop> = () => {
   const playerRef = useRef<ReactHowler | null>(null)
-  const { time, notification, Theme } = useSettings()
+  const { time, notification, TimerTheme: Theme, Audio: volume } = useSettings()
 
   const convertToSeconds = (hours: number, minutes: number, seconds: number): number => {
     return hours * 3600 + minutes * 60 + seconds
@@ -105,8 +105,8 @@ const CircularTimer: React.FC<timerprop> = () => {
       }
     }
     const shouldConfirm =
-      (Theme.SessionEnd === 'Focus Duration' && restCount > 0) ||
-      (Theme.SessionEnd !== 'Focus Duration' && (restCount > 1 || !resting))
+      (Theme.SessionEnd && restCount > 0) ||
+      (!Theme.SessionEnd && (restCount > 1 || !resting))
 
     if (shouldConfirm) {
       setPendingOperation(() => operation)
@@ -210,7 +210,7 @@ const CircularTimer: React.FC<timerprop> = () => {
               <Heading size='3xl'>{resting ? 'Break' : 'Focus'} Session End</Heading>
               <Box>
                 <IconButton onClick={() => handleConfirmation()} rounded='full' variant='outline' size='2xl'>
-                  <FaPlay />
+                  <FaPlay style={{ color: 'white' }}/>
                 </IconButton>
               </Box>
             </Flex>
@@ -237,6 +237,7 @@ const CircularTimer: React.FC<timerprop> = () => {
       </Flex>
       {isConfirmationOpen ?
         <ReactHowler
+          volume={volume.Volume}
           src={Audio}
           playing={true}
           loop={true}

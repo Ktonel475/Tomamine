@@ -2,6 +2,7 @@ import { Box, Flex, Heading, IconButton, Button } from '@chakra-ui/react'
 import { FaGithub } from "react-icons/fa"
 import { IoSettingsOutline } from "react-icons/io5"
 import { FiEdit } from "react-icons/fi"
+import { LuAudioLines } from "react-icons/lu"
 import Timer from './components/Timer'
 import {
   DrawerBody,
@@ -13,14 +14,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 
-} from "./components/ui/drawer"
+} from "@/components/ui/drawer"
+import Audio from './page/Audio'
 import Settings from './page/Settings'
 import Edit from './page/Edit'
 import useSettings from './components/sessionStorage'
 
 
 function App() {
-  const { Theme } = useSettings()
+  const { TimerTheme: Theme } = useSettings()
 
   return (
     <>
@@ -33,7 +35,7 @@ function App() {
             <DrawerRoot placement='bottom' size='sm'>
               <DrawerTrigger asChild>
                 <IconButton bg='transparent' variant='ghost' size='2xl' >
-                  <FiEdit  style={{ color: 'white' }}/>
+                  <FiEdit style={{ color: 'white' }} />
                 </IconButton>
               </DrawerTrigger>
               <DrawerContent>
@@ -43,19 +45,19 @@ function App() {
                   </DrawerTitle>
                 </DrawerHeader>
                 <DrawerBody>
-                  <Edit/>
+                  <Edit />
                 </DrawerBody>
                 <DrawerFooter>
-                  <DrawerActionTrigger asChild>
+                  <DrawerActionTrigger asChild className='dark'>
                     <Button variant="outline">Close</Button>
                   </DrawerActionTrigger>
                 </DrawerFooter>
               </DrawerContent>
             </DrawerRoot>
-            <DrawerRoot placement='bottom' size='sm' >
-              <DrawerTrigger asChild>
+            <DrawerRoot placement='bottom' size='sm'>
+              <DrawerTrigger asChild >
                 <IconButton bg='transparent' variant='ghost' size='2xl'>
-                  <IoSettingsOutline style={{ color: 'white' }}/>
+                  <IoSettingsOutline style={{ color: 'white' }} />
                 </IconButton>
               </DrawerTrigger>
               <DrawerContent>
@@ -66,6 +68,28 @@ function App() {
                 </DrawerHeader>
                 <DrawerBody>
                   <Settings />
+                </DrawerBody>
+                <DrawerFooter>
+                  <DrawerActionTrigger asChild>
+                    <Button variant="outline">Close</Button>
+                  </DrawerActionTrigger>
+                </DrawerFooter>
+              </DrawerContent>
+            </DrawerRoot>
+            <DrawerRoot placement='bottom' size='sm'>
+              <DrawerTrigger asChild>
+                <IconButton bg='transparent' variant='ghost' size='2xl' >
+                  <LuAudioLines style={{ color: 'white' }} />
+                </IconButton>
+              </DrawerTrigger>
+              <DrawerContent >
+                <DrawerHeader>
+                  <DrawerTitle asChild>
+                    <Heading size='2xl'>Audio</Heading>
+                  </DrawerTitle>
+                </DrawerHeader>
+                <DrawerBody>
+                  <Audio/>
                 </DrawerBody>
                 <DrawerFooter>
                   <DrawerActionTrigger asChild>
@@ -85,9 +109,9 @@ function App() {
         >
           <Flex direction='Column' alignItems='center'>
             <Heading size='2xl' p={4}>
-              {Theme.title}
+              {Theme.TimerTitle}
             </Heading>
-            <Timer/>
+            <Timer />
           </Flex>
         </Box>
         <div className="footer">
@@ -100,7 +124,7 @@ function App() {
             <Box />
             <Box>
               <IconButton variant="ghost" size='2xl' rounded='full'>
-                <FaGithub style={{ color: 'white' }}/>
+                <FaGithub style={{ color: 'white' }} />
               </IconButton>
             </Box>
           </Flex>

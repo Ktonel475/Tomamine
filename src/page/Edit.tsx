@@ -3,7 +3,7 @@ import {
     NumberInputField,
     NumberInputLabel,
     NumberInputRoot,
-} from "../components/ui/number-input"
+} from "@/components/ui/number-input"
 import { Flex, Heading, Box } from "@chakra-ui/react"
 import useSettings from '../components/sessionStorage'
 
