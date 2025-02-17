@@ -5,10 +5,14 @@ import App from './App.tsx'
 import { Provider } from '@/components/ui/provider'
 import { ColorModeProvider } from "@/components/ui/color-mode"
 
+localStorage.setItem('theme', 'dark')
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider>
-    <ColorModeProvider><App /></ColorModeProvider>
+      <ColorModeProvider>
+        <App />
+      </ColorModeProvider>
     </Provider>
   </StrictMode>,
 )

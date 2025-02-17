@@ -19,10 +19,29 @@ import Audio from './page/Audio'
 import Settings from './page/Settings'
 import Edit from './page/Edit'
 import useSettings from './components/sessionStorage'
+import { useState, useEffect } from 'react'
 
 
 function App() {
   const { TimerTheme: Theme } = useSettings()
+  const [title, setTitle] = useState('')
+
+  const replacePercent20 = (input: string): void => {
+    let result = ""
+    for (let i = 0; i < input.length; i++) {
+      if (input[i] === '%' && input[i + 1] === '2' && input[i + 2] === '0') {
+        result += ' '
+        i += 2; // Skip the next two characters ('2' and '0')
+      } else {
+        result += input[i]
+      }
+    }
+    setTitle(result)
+  }
+
+  useEffect(() => {
+    replacePercent20(Theme.TimerTitle)
+  }, [Theme.TimerTitle])
 
   return (
     <>
@@ -48,7 +67,7 @@ function App() {
                   <Edit />
                 </DrawerBody>
                 <DrawerFooter>
-                  <DrawerActionTrigger asChild className='dark'>
+                  <DrawerActionTrigger asChild>
                     <Button variant="outline">Close</Button>
                   </DrawerActionTrigger>
                 </DrawerFooter>
@@ -89,7 +108,7 @@ function App() {
                   </DrawerTitle>
                 </DrawerHeader>
                 <DrawerBody>
-                  <Audio/>
+                  <Audio />
                 </DrawerBody>
                 <DrawerFooter>
                   <DrawerActionTrigger asChild>
@@ -109,7 +128,7 @@ function App() {
         >
           <Flex direction='Column' alignItems='center'>
             <Heading size='2xl' p={4}>
-              {Theme.TimerTitle}
+              {title}
             </Heading>
             <Timer />
           </Flex>
