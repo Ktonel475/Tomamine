@@ -30,6 +30,7 @@ type Preference = {
 
 type AudioPref = {
   Volume: number
+  Audio: string
 }
 
 type SettingsStore = {
@@ -74,7 +75,8 @@ const defaultTheme: Preference = {
 }
 
 const defaultAudio: AudioPref = {
-  Volume: 1.0
+  Volume: 1.0,
+  Audio: '',
 }
 
 const useSettings = create<SettingsStore>((set) => ({

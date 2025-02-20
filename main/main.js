@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 400,
+    width: 500,
     height: 700,
     autoHideMenuBar: true,
     icon: path.join(__dirname, 'public/winIcon.ico'),

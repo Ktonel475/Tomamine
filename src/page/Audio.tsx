@@ -1,12 +1,21 @@
-import { Flex } from '@chakra-ui/react'
+import { Code, Flex } from '@chakra-ui/react'
 import { Field } from '@/components/ui/field'
 import { Slider } from "@/components/ui/slider"
 import useSettings from '@/components/sessionStorage'
 import { useEffect, useState } from 'react'
+import {
+    FileUploadRoot,
+    FileInput
+} from "@/components/ui/file-upload"
+import {
+    Button,
+} from '@chakra-ui/react'
+import { fileToBase64 } from '@/components/convertion'
 
 const Audio = () => {
-    const { Audio, setAudio } = useSettings()
+    const { Audio, setAudio, resetAudio } = useSettings()
     const [volume, setVolume] = useState([Audio.Volume * 100])
+    const [file, saveFile] = useState<File[] | null>(null)
 
     const valueHandle = (value: number[]) => {
         setAudio((prevState) => ({
@@ -15,9 +24,24 @@ const Audio = () => {
         }))
     }
 
-    useEffect(() => {
+    const save = async () => {
+        if (!file?.length) return
+        const result = await fileToBase64(file[0])
+        setAudio((prevState) => ({
+            ...prevState,
+            Audio: result,
+            Default: false
+        }))
+    }
 
-    }, [volume, setAudio])
+    const reset = () => {
+        resetAudio()
+    }
+
+
+    useEffect(() => {
+        setVolume([Audio.Volume * 100])
+    }, [Audio])
 
     return (
         <div>
@@ -28,7 +52,7 @@ const Audio = () => {
             >
                 <Field label='Volumn' width='auto'>
                     <Slider
-                        defaultValue={[Audio.Volume * 100]}
+                        defaultValue={volume}
                         size='lg'
                         value={volume}
                         max={100}
@@ -38,8 +62,23 @@ const Audio = () => {
                         onValueChange={(e) => setVolume(e.value)}
                     />{volume}
                 </Field>
-                Default Alarm by<a href="https://pixabay.com/users/lesiakower-25701529/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=113180">Lesiakower</a >
-                from < a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=113180"> Pixabay</a >
+                <FileUploadRoot
+                    accept={["audio/*"]}
+                    onFileAccept={(e) => saveFile(e.files)}
+                    maxFileSize={3000000}
+                >
+                    <Code>File size must not exceed 3MB</Code>
+                    <FileInput width='270px' />
+                    Reload Page to apply change
+                </FileUploadRoot>
+                <Flex width={75} gap={5} pt={5}>
+                    <Button width='100%' variant='outline' onClick={() => save()}>
+                        Save
+                    </Button>
+                    <Button width='100%' variant='subtle' onClick={() => reset()}>
+                        Reset
+                    </Button>
+                </Flex>
             </Flex>
         </div>
     )

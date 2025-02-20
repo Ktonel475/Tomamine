@@ -6,7 +6,7 @@ import { FaPlay } from "react-icons/fa"
 import useSettings from '../sessionStorage'
 import Core from './core'
 import ReactHowler from 'react-howler'
-import Audio from '../../assets/oversimplified-alarm-clock-113180.mp3'
+import { convertToFileUrl} from "../convertion"
 
 interface timerprop {
   CompleteStatus?: string
@@ -16,7 +16,7 @@ interface timerprop {
 const CircularTimer: React.FC<timerprop> = () => {
   const playerRef = useRef<ReactHowler | null>(null)
   const { time, notification, TimerTheme: Theme, Audio: volume } = useSettings()
-
+  const [userAudio, setUserAudio] = useState<string>(convertToFileUrl(volume.Audio))
   const convertToSeconds = (hours: number, minutes: number, seconds: number): number => {
     return hours * 3600 + minutes * 60 + seconds
   }
@@ -49,6 +49,10 @@ const CircularTimer: React.FC<timerprop> = () => {
   const [key, setKey] = useState(0)
   const [isConfirmationOpen, setConfirmationOpen] = useState(false)
   const [pendingOperation, setPendingOperation] = useState<(() => void) | null>(null)
+
+  useEffect(() => {
+      setUserAudio(convertToFileUrl(volume.Audio))
+  }, [volume.Audio])
 
   useEffect(() => {
     setTimerTheme({
@@ -210,7 +214,7 @@ const CircularTimer: React.FC<timerprop> = () => {
               <Heading size='3xl'>{resting ? 'Break' : 'Focus'} Session End</Heading>
               <Box>
                 <IconButton onClick={() => handleConfirmation()} rounded='full' variant='outline' size='2xl'>
-                  <FaPlay style={{ color: 'white' }}/>
+                  <FaPlay style={{ color: 'white' }} />
                 </IconButton>
               </Box>
             </Flex>
@@ -229,16 +233,17 @@ const CircularTimer: React.FC<timerprop> = () => {
 
       <Flex justifyContent='space-between'>
         <IconButton onClick={() => togglePlay()} variant="ghost" rounded='full'>
-          {isplaying || isRestplaying ? <PiPause style={{ color: 'white' }}/> : <PiPlay style={{ color: 'white' }}/>}
+          {isplaying || isRestplaying ? <PiPause style={{ color: 'white' }} /> : <PiPlay style={{ color: 'white' }} />}
         </IconButton>
         <IconButton onClick={() => Reset()} variant='ghost' rounded='full'>
-          <RiResetLeftLine style={{ color: 'white' }}/>
+          <RiResetLeftLine style={{ color: 'white' }} />
         </IconButton>
       </Flex>
       {isConfirmationOpen ?
         <ReactHowler
           volume={volume.Volume}
-          src={Audio}
+          src={userAudio}
+          format={["mp3"]}
           playing={true}
           loop={true}
         /> : ''
